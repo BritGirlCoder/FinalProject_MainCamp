@@ -1,0 +1,19 @@
+﻿[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+.ng-invalid.ng-touched {
+    background-color: yellow;
+}
+.error{
+    color: darkred;
+}
+body {
+
+    background-image:url("http://www.blog.carlywilson.co.uk/images/world_map_faded.jpg");
+    background-repeat:no-repeat;
+    background-size: cover;
+
+}
+.grey-background {
+    background-color:#EDEFF0;
+}

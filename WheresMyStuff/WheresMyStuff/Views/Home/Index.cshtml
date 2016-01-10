@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html ng-app="WMS">
+<head>
+    <title></title>
+    @*using HTML5 mode, so need this in the head*@
+    <base href="/" />
+    @*CSS files*@
+    <link href="http://bootswatch.com/flatly/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Where's My Stuff?</h1>
+            </div>
+        </div>       
+        
+        <div class="row">
+            <nav class="navbar navbar-default">
+                <div class="collapse navbar-collapse">
+                    <ul class="nav nav-pills">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About Where's My Stuff</a></li>
+                        <li><a href="/profile">Set up your Profile</a></li>
+                        <li><a href="/items">Manage your Items</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>      
+    </div>
+
+    @*element for our partial views*@
+    <div class="container" ng-view></div>
+
+    <!--insert copyright & contact info here - footer-->
+
+
+    @*Bootstrap*@
+    @*<script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>*@
+    @*Angular*@
+    <script src="~/Scripts/angular.js"></script>
+    <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
+    <script src="~/Scripts/angular-route.js"></script>
+    <script src="~/Scripts/angular-resource.js"></script>
+    @*Application*@
+    <script src="~/ngApp/app.js"></script>
+    <script src="~/ngApp/Services/CRUDServices.js"></script>
+    <script src="~/ngApp/Controllers/AboutController.js"></script>
+    <script src="~/ngApp/Controllers/ItemsController.js"></script>
+    <script src="~/ngApp/Controllers/MainController.js"></script>
+    <script src="~/ngApp/Controllers/ProfileController.js"></script>
+    <script src="~/ngApp/Controllers/ItemModalController.js"></script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+﻿<div class="row">
+    <!--insert carousel here-->
+    <div>
+        <uib-carousel interval="myInterval" no-wrap="noWrapSlides">
+            <uib-slide ng-repeat="slide in wms.slides" active="slide.active">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+                <div class="carousel-caption">
+                    <p>{{slide.text}}</p>
+                </div>
+            </uib-slide>
+        </uib-carousel>
+    </div>
+</div>
+<div class="row">
+    <div class="jumbotron">
+        <h2>
+            Got Stuff?
+        </h2>
+        <p>
+            We get it. Somehow you have all this stuff. It's in your closets, your garage,
+            your storage unit, your parents' house. Who knows what you really have? That's
+            why Where's My Stuff makes it really easy to inventory your things and keep
+            track of what you've got!
+        </p>
+        <!--<p>
+            <a class="btn btn-primary btn-large" href="/about">Learn more</a>
+        </p>-->
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-md-4">
+        <h2>
+            Your Profile
+        </h2>
+        <h4>
+            Tell us about yourself.
+        </h4>
+        <p class="medText">
+            Add your name, addresses, contact information for movers, locations of
+            your stuff, buyers, sellers, renters ... All the information you need at
+            your fingertips!
+        </p>
+
+    </div>
+    <div class="col-md-4">
+        <h2>
+            Your Stuff
+        </h2>
+        <h4>
+            Tell us about your stuff.
+        </h4>
+        <p class="medText">
+            Add photos, where it is, purchase price and date, whether you plan to sell it
+            or give it away, moving box numbers, descriptions. Never lose a widget
+            (or your grandmother's tea service) again!
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>
+            Learn More
+        </h2>
+        <h4>
+            Learn about the people behind <span class="emphasis">Where's My Stuff</span>.
+        </h4>
+        <p class="medText">
+            As veterans of almost 30 moves themselves (including international moves), and with
+            family in the house clearance business, they understand how easy it is to lose
+            valuables, make duplicate purchases, or even just forget what you have.  We built Where's
+            My Stuff to help you keep it all organized!
+        </p>
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <p>
+            <a class="btn btn-info" href="/profile">View details »</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <p>
+            <a class="btn btn-info" href="/items">View details »</a>
+        </p>
+    </div>
+    <div class="col-md-4">
+        <p>
+            <a class="btn btn-info" href="/about">View details »</a>
+        </p>
+    </div>
+</div>

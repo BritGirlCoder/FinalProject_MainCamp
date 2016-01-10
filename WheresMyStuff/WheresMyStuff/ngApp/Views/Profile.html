@@ -1,0 +1,125 @@
+﻿<div class="row grey-background">
+    <!--Static image-->
+    <div class="col-md-3">
+        <!--<div>
+            <img src="http://www.elementalnw.com/wp-content/uploads/2014/08/Unknown-person.jpg"
+                 class="img-responsive img-rounded" alt="About You" />
+        </div>-->
+        <!--Log-in form area-->
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Log-in:</h3>
+                <form name="loginForm" novalidate ng-submit="wms.login(account)">
+                    <div class="form-group">
+                        <label>Username:</label>
+                        <input type="email" ng-model="wms.user.username" name="lUName" id="lUName" class="form-control" placeholder="Username" required />
+                        <span ng-show="loginForm.lUName.$touched && loginForm.lUName.$error.required" class="error">
+                            This field is required
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <label>Password:</label>
+                        <input type="password" ng-model="wms.user.password" name="lPwd" class="form-control" placeholder="Enter a password" required />
+                        <span ng-show="loginForm.lPwd.$touched && loginForm.lPwd.$error.required" class="error">
+                            This field is required
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" id="btnLogin" class="btn btn-primary btn-block" value="Log-in" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--profile form-->
+    <div class="col-md-5">
+        <h3>Create or manage your account details:</h3>
+        <form name="pForm" novalidate ng-submit="wms.createAccount(account)">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" id="profileFullName" class="form-control" placeholder="Full Name" />
+            </div>
+            <div class="form-group">
+                <label>Email/Username:</label>
+                <input type="email" ng-model="wms.user.username" name="uName" class="form-control" placeholder="name@example.com" required />
+                <span ng-show="pForm.uName.$touched && pForm.uName.$error.required" class="error">
+                    This field is required
+                </span>
+            </div>
+            <div class="form-group">
+                <label>Password:</label>
+                <input type="password" ng-model="wms.user.password" name="pwd" class="form-control" placeholder="Enter a password" required />
+                <span ng-show="pForm.pwd.$touched && pForm.pwd.$error.required" class="error">
+                    This field is required
+                </span>
+            </div>
+            <div class="form-group">
+                <label>Phone:</label>
+                <input type="tel" ng-model="wms.user.phone" id="profilePhone" class="form-control" placeholder="555-555-5555" />
+            </div>
+            <h4>Current Address:</h4>
+            <div class="form-group">
+                <label>Street</label>
+                <input type="text" ng-model="wms.user.street" id="profileStreet" class="form-control" placeholder="123 Any St." />
+            </div>
+            <div class="form-group">
+                <label>City</label>
+                <input type="text" ng-model="wms.user.city" id="profileCity" class="form-control" placeholder="Any City" />
+            </div>
+            <div class="form-group">
+                <label>State</label>
+                <input type="text" ng-model="wms.user.state" id="profileState" class="form-control" placeholder="Any State" />
+            </div>
+            <div class="form-group">
+                <label>Zip</label>
+                <input type="text" ng-model="wms.user.zip" id="profileZip" class="form-control" placeholder="95210" />
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="submit" id="profileBtnCreate" class="btn btn-primary btn-block" value="Create" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="button" id="profileBtnEdit" class="btn btn-info disabled btn-block" value="Edit" ng-click = "wms.editAccount()" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="button" id="profileBtnSave" class="btn btn-info disabled btn-block" value="Save" ng-click = "wms.saveAccount(account)" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <input type="button" id="profileBtnDelete" class="btn btn-danger disabled btn-block" value="Delete" ng-click="wms.deleteAccount(account)" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <!--Add Authorized User area-->
+    
+    <div class="col-md-4" id="authorizedUsers">        
+        <h3>Add another user:</h3>
+        <form name="authUserForm" novalidate ng-submit="wms.createUser(user)">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" ng-model="wms.authUser.aUName" name="aUName" id="authFullName" class="form-control" placeholder="Full Name" required/>
+                <span ng-show="authUserForm.aUName.$touched && authUserForm.aUName.$error.required" class="error">
+                    This field is required
+                </span>
+            </div>
+            <div class="form-group">
+                <label>Email:</label>
+                <input type="email" ng-model="wms.authUser.email" name="aUEmail" class="form-control" placeholder="name@example.com" required />
+                <span ng-show="authUserForm.aUEmail.$touched && authUserForm.aUEmail.$error.required" class="error">
+                    This field is required
+                </span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="authUserBtnAdd" class="btn btn-primary btn-block" value="Add User"/>
+            </div>
+        </form>
+    </div>
+</div>

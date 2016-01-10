@@ -1,0 +1,98 @@
+﻿   
+    <!--TODO
+        1.  Remove myStuffItemImage & place on details modal
+        2.  Once hooked up, get only 25 items at a time listed out in the table - include small images if poss
+        3.  Each item will have a thumbnail image(?), name, location & description
+        3.  Clicking on any item in the table will launch the details modal
+        4.  The details of the item will be displayed in the modal
+        DONE 5.  Relocate the edit & delete buttons to the modal
+        6.  Edit should allow editing right on the modal
+        7.  Delete should allow deletion right from the modal
+        8.  If 6/7 not poss, return to items page & enable fields for editing; change button text to edit or
+            delete as appropriate
+        9.  Remove the list & save buttons - should load the first 25 on pageload and save automatically when
+            adding the item
+        10. Make add item full width of form
+        11. Add tags field, owner field, change Box Number to Item Label
+        -->
+
+    <div class="row container grey-background">
+        <h3>{{wms.message}}</h3>
+        
+        <div class="col-md-6">
+            <h4>Add your items below</h4>
+            <form name = itemForm; novalidate ng-submit = "wms.createItem()">
+                <div class="form-group">
+                    <label>Name of item:</label>
+                    <input type="text" ng-model="wms.item.itemName" name="itemName" class="form-control" placeholder="Item Name" required />
+                    <span ng-show="itemForm.itemName.$touched && itemForm.itemName.$error.required" class="error">
+                        This field is required
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Description of item:</label>
+                    <input type="text" ng-model="wms.item.itemDesc" name="itemDesc" class="form-control" placeholder="Item Description" />                    
+                </div>
+                <div class="form-group">
+                    <label>Location of item:</label>
+                    <select class="form-control" ng-model="wms.item.itemLocation" name="itemLocation" required>
+                        <option>Home - Living Room</option>
+                        <option>Home - Dining Room</option>
+                        <option>Home - Kitchen</option>
+                        <option>Home - Master Bedroom</option>
+                        <option>Home - Bedroom 1</option>
+                        <option>Home - Bedroom 2</option>
+                        <option>Home - Office</option>
+                        <option>Home - Garage</option>
+                        <option>Storage Unit</option>
+                    </select>
+                    <span ng-show="itemForm.itemLocation.$touched && itemForm.itemLocation.$error.required" class="error">
+                        This field is required
+                    </span>
+                </div>
+                <div class="form-group">
+                    <label>Item Label:</label>
+                    <input type="text" ng-model="wms.item.itemLabel" name="itemLabel" class="form-control" placeholder="001" />
+                </div>
+                <div class="form-group">
+                    <label>Item Owner:</label>
+                    <input type="text" ng-model="wms.item.itemOwner" name="itemOwner" class="form-control" placeholder="Who does this belong to?" />
+                    <span ng-show="itemForm.itemOwner.$touched && itemForm.itemOwner.$error.required" class="error">
+                        This field is required
+                    </span>
+                </div>
+                <div class="form-group">                    
+                    <h4>Upload a Photo:</h4>
+                    <input ng-model="wms.item.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" />
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input id="btnCreateItem" type="button" class="btn btn-primary btn-block" value="Add Item" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <input id="btnListItems" type="button" class="btn btn-success btn-block" value="List Items" ng-click="displayItems()" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6" id="myStuffItemTable">
+            <table class="table table-hover">
+                <tr>
+                    <th>Item Photo</th><th>Description</th><th>Location</th><th>Name</th>
+                </tr>
+                <tr>
+                    <td ng-click="wms.showModal(item)" ng-repeat="item in wms.items">{{item.photo}}</td>
+                    <td ng-repeat="item in wms.items">{{item.name}}</td>
+                    <td ng-repeat="item in wms.items">{{item.description}}</td>
+                    <td ng-repeat="item in wms.items">{{item.location}}</td>
+                </tr>
+            </table>
+            <!--Will pass in item from selected item in table-->
+            <button class="btn btn-info" ng-click="wms.showModal()">Test Modal</button>
+        </div>
+    </div>
+
