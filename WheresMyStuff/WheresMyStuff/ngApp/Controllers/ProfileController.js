@@ -21,4 +21,3 @@ var WMS;
         Controllers.ProfileController = ProfileController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=ProfileController.js.map

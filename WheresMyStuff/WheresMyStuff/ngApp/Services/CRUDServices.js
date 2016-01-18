@@ -34,16 +34,26 @@ var WMS;
         //CRUD class for items (items view/controller)
         var ItemsServices = (function () {
             //constructor with $resource dependency injection
-            function ItemsServices($resource) {
-                this.ItemResource = $resource("");
+            function ItemsServices($resource /*itemsTempData: WMS.Data.ItemsTempData*/) {
+                //**NONE OF THESE WORK
+                //this.ItemResource = $resource("/api/ItemsModelsController/:id");
+                //this.ItemResource = $resource("../api/ItemsModelsController/:id");
+                this.ItemResource = $resource("../api/ItemsModels/:id");
+                this.listItems();
             }
             //Read Items
             ItemsServices.prototype.listItems = function () {
                 return this.ItemResource.query();
             };
             //Create/Save item
-            ItemsServices.prototype.saveItem = function (item) {
-                return this.ItemResource.save(item).$promise;
+            ItemsServices.prototype.SaveItem = function (item) {
+                var _this = this;
+                //**NOT SURE HOW TO CHANGE THIS FOR USE WITH ANG ItemsCONTROLLER            
+                return this.ItemResource.save(item).$promise.then(function () {
+                    _this.item = null;
+                    _this.listItems();
+                    //TESTING ONLY - console.log("CRUDServices SaveItem method");
+                });
             };
             //Fetch specific item
             ItemsServices.prototype.getItem = function (id) {
@@ -76,4 +86,3 @@ var WMS;
         angular.module("WMS").service("itemsService", ItemsServices);
     })(Services = WMS.Services || (WMS.Services = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=CRUDServices.js.map

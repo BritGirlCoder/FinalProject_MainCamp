@@ -3,19 +3,22 @@ var WMS;
     var Controllers;
     (function (Controllers) {
         var ItemsController = (function () {
+            //Holds the image of the current item - doesn't work - can't pass in multiple objects to modal with resolve
+            //public itemImageSrc;
             //private keywords so class can access them
-            function ItemsController(tagsService, itemsService, $modal, $location) {
+            function ItemsController(tagsService, itemsService, /*private tempData: WMS.Data.ItemsTempData*/ $modal, $location) {
                 this.itemsService = itemsService;
                 this.$modal = $modal;
                 this.$location = $location;
                 //Testing: reading tags from the service
-                this.tags = tagsService.readTags();
-                console.log(this.tags);
+                //this.tags = tagsService.readTags();
+                //console.log(this.tags);
                 //Testing - ensuring routing works correctly
-                this.message = "Hello from the Items page!";
+                //this.message = "Hello from the Items page!"
             }
             ItemsController.prototype.showModal = function () {
                 var _this = this;
+                //this.itemImageSrc = this.item.photo;
                 //Opens the modal with the options specified in the argument object
                 this.$modal.open({
                     templateUrl: '/ngApp/Views/ItemModal.html',
@@ -29,12 +32,14 @@ var WMS;
                     },
                     size: 'lg'
                 });
+                console.log(this.item);
             };
             ;
             ItemsController.prototype.createItem = function () {
                 var _this = this;
-                this.itemsService.saveItem(this.item).then(function () {
+                this.itemsService.SaveItem(this.itemToAdd).then(function () {
                     _this.$location.path("/items");
+                    //TESTING ONLY - console.log("ItemsController createItem method");
                 });
             };
             ItemsController.prototype.displayItems = function () {
@@ -45,4 +50,3 @@ var WMS;
         Controllers.ItemsController = ItemsController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=ItemsController.js.map

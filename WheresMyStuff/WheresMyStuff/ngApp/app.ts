@@ -23,12 +23,7 @@
                 templateUrl: "ngApp/Views/Profile.html",
                 controller: WMS.Controllers.ProfileController,
                 controllerAs: "wms"
-            })
-            //.when("/details", {
-            //    templateUrl: "ngApp/Views/ItemModal.html",
-            //    controller: WMS.Controllers.ItemModalController,
-            //    controllerAs: "wms"
-            //})
+            })            
             .otherwise({
                 redirectTo: "/"
             });

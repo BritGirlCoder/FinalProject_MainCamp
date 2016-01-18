@@ -11,4 +11,3 @@ var WMS;
         Controllers.AboutController = AboutController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=AboutController.js.map

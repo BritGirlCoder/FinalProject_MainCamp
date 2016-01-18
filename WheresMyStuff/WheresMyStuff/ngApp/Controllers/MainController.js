@@ -28,4 +28,3 @@ var WMS;
         Controllers.MainController = MainController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=MainController.js.map

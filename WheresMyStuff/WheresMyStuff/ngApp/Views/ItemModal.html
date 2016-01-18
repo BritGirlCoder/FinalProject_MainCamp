@@ -1,18 +1,18 @@
-﻿<div class="container">
+﻿<div>
     <!--placeholder for testing-->
-    <h1 class="modal-title">Testing: {{wms.message}}</h1>
+    <h1 class="modal-title">Details for {{wms.item.itemName}}</h1>    
 </div>
-        <form class="modal-body" name="detailsForm" novalidate>
+        <form class="modal-body" name="detailsForm" novalidate ng-model="wms.item">
             <div class="form-group">
                 <label>Name of item:</label>
-                <input type="text" ng-model="wms.item.itemName" name="itemName" class="form-control" placeholder="Item Name" required />
+                <input type="text" ng-model="wms.item.itemName" name="itemName" class="form-control" value="{{wms.item.itemName}}" required />
                 <span ng-show="detailsForm.itemName.$touched && detailsForm.itemName.$error.required" class="error">
                     This field is required
                 </span>
             </div>
             <div class="form-group">
                 <label>Description of item:</label>
-                <input type="text" ng-model="wms.item.itemDesc" name="itemDesc" class="form-control" placeholder="Item Description" />
+                <input type="text" ng-model="wms.item.itemDesc" name="itemDesc" class="form-control" value="{{item.itemDesc}}" />
             </div>
             <div class="form-group">
                 <label>Location of item:</label>
@@ -33,22 +33,22 @@
             </div>
             <div class="form-group">
                 <label>Item Label:</label>
-                <input type="text" ng-model="wms.item.itemLabel" name="itemLabel" class="form-control" placeholder="001" />
+                <input type="text" ng-model="wms.item.itemLabel" name="itemLabel" class="form-control" value="{{item.itemLabel}}" />
             </div>
             <div class="form-group">
                 <label>Item Owner:</label>
-                <input type="text" ng-model="wms.item.itemOwner" name="itemOwner" class="form-control" placeholder="Who does this belong to?" />
+                <input type="text" ng-model="wms.item.itemOwner" name="itemOwner" class="form-control" value="{{item.itemOwner}}" />
                 <span ng-show="detailsForm.itemOwner.$touched && detailsForm.itemOwner.$error.required" class="error">
                     This field is required
                 </span>
             </div>
             <div class="form-group">
                 <h4>Upload a Photo:</h4>
-                <input ng-model="wms.item.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" />
+                <input ng-model="wms.item.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" value="{{item.Photo}}"/>
             </div>
             <!--buttons to close the modal, edit or delete the item-->
-            <button class="btn btn-warning" ng-click="wms.editModal()">Edit Item</button>
-            <button class="btn btn-danger" ng-click="wms.deleteModal()">Delete Item</button>
+            <button class="btn btn-warning" ng-click="wms.editModal(item)">Edit Item</button>
+            <button class="btn btn-danger" ng-click="wms.deleteModal(item)">Delete Item</button>
             <button class="btn btn-primary" ng-click="wms.closeModal()">Close</button>
         </form>
 

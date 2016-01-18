@@ -13,7 +13,8 @@
         9.  Remove the list & save buttons - should load the first 25 on pageload and save automatically when
             adding the item
         10. Make add item full width of form
-        11. Add tags field, owner field, change Box Number to Item Label
+        11. Add owner field, change Box Number to Item Label
+        12. Change owner field to dropdown populated by users on the logged in account
         -->
 
     <div class="row container grey-background">
@@ -24,18 +25,18 @@
             <form name = itemForm; novalidate ng-submit = "wms.createItem()">
                 <div class="form-group">
                     <label>Name of item:</label>
-                    <input type="text" ng-model="wms.item.itemName" name="itemName" class="form-control" placeholder="Item Name" required />
+                    <input type="text" ng-model="wms.itemToAdd.itemName" name="itemName" class="form-control" placeholder="Item Name" required />
                     <span ng-show="itemForm.itemName.$touched && itemForm.itemName.$error.required" class="error">
                         This field is required
                     </span>
                 </div>
                 <div class="form-group">
                     <label>Description of item:</label>
-                    <input type="text" ng-model="wms.item.itemDesc" name="itemDesc" class="form-control" placeholder="Item Description" />                    
+                    <input type="text" ng-model="wms.itemToAdd.itemDesc" name="itemDesc" class="form-control" placeholder="Item Description" />                    
                 </div>
                 <div class="form-group">
                     <label>Location of item:</label>
-                    <select class="form-control" ng-model="wms.item.itemLocation" name="itemLocation" required>
+                    <select class="form-control" ng-model="wms.itemToAdd.itemLocation" name="itemLocation" required>
                         <option>Home - Living Room</option>
                         <option>Home - Dining Room</option>
                         <option>Home - Kitchen</option>
@@ -52,28 +53,28 @@
                 </div>
                 <div class="form-group">
                     <label>Item Label:</label>
-                    <input type="text" ng-model="wms.item.itemLabel" name="itemLabel" class="form-control" placeholder="001" />
+                    <input type="text" ng-model="wms.itemToAdd.itemLabel" name="itemLabel" class="form-control" placeholder="001" />
                 </div>
                 <div class="form-group">
                     <label>Item Owner:</label>
-                    <input type="text" ng-model="wms.item.itemOwner" name="itemOwner" class="form-control" placeholder="Who does this belong to?" />
+                    <input type="text" ng-model="wms.itemToAdd.itemOwner" name="itemOwner" class="form-control" placeholder="Who does this belong to?" />
                     <span ng-show="itemForm.itemOwner.$touched && itemForm.itemOwner.$error.required" class="error">
                         This field is required
                     </span>
                 </div>
                 <div class="form-group">                    
                     <h4>Upload a Photo:</h4>
-                    <input ng-model="wms.item.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" />
+                    <input ng-model="wms.itemToAdd.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" />
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input id="btnCreateItem" type="button" class="btn btn-primary btn-block" value="Add Item" />
+                            <input id="btnCreateItem" type="button" class="btn btn-primary btn-block" value="Add Item"  ng-click="wms.createItem()"/>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input id="btnListItems" type="button" class="btn btn-success btn-block" value="List Items" ng-click="displayItems()" />
+                            <input id="btnListItems" type="button" class="btn btn-success btn-block" value="List Items" ng-click="wms.displayItems()" />
                         </div>
                     </div>
                 </div>
@@ -84,11 +85,12 @@
                 <tr>
                     <th>Item Photo</th><th>Description</th><th>Location</th><th>Name</th>
                 </tr>
-                <tr>
-                    <td ng-click="wms.showModal(item)" ng-repeat="item in wms.items">{{item.photo}}</td>
-                    <td ng-repeat="item in wms.items">{{item.name}}</td>
-                    <td ng-repeat="item in wms.items">{{item.description}}</td>
-                    <td ng-repeat="item in wms.items">{{item.location}}</td>
+                <!--Note that the ng-repeat is on the row-->
+                <tr ng-repeat="item in wms.items">
+                    <td ng-click="wms.showModal(item)">{{item.itemPhoto}}</td>                    
+                    <td>{{item.itemDesc}}</td>
+                    <td>{{item.itemLocation}}</td>
+                    <td>{{item.itemName}}</td>
                 </tr>
             </table>
             <!--Will pass in item from selected item in table-->

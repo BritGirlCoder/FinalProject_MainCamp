@@ -38,13 +38,21 @@ namespace WMS.Services {
     //**TODO - once backend db is complete, will need to access the items table in db via webapi
     //**TODO - build dummy array of items for testing & point ItemResource at that instead
     //CRUD class for items (items view/controller)
+
+
     export class ItemsServices {
         //property to hold items $resource
         private ItemResource;
+        //***THIS SHOULD BE IN ITEMSCONTROLLER?
+        private item;
 
         //constructor with $resource dependency injection
-        constructor($resource: ng.resource.IResourceService) {
-            this.ItemResource = $resource("");
+        constructor($resource: ng.resource.IResourceService /*itemsTempData: WMS.Data.ItemsTempData*/) {
+            //**NONE OF THESE WORK
+            //this.ItemResource = $resource("/api/ItemsModelsController/:id");
+            //this.ItemResource = $resource("../api/ItemsModelsController/:id");
+            this.ItemResource = $resource("../api/ItemsModels/:id");
+            this.listItems();
         }
 
         //Read Items
@@ -53,8 +61,13 @@ namespace WMS.Services {
         }
 
         //Create/Save item
-        public saveItem(item) {
-            return this.ItemResource.save(item).$promise;
+        public SaveItem(item) {
+            //**NOT SURE HOW TO CHANGE THIS FOR USE WITH ANG ItemsCONTROLLER            
+            return this.ItemResource.save(item).$promise.then(() => {
+                this.item = null;
+                this.listItems();
+                //TESTING ONLY - console.log("CRUDServices SaveItem method");
+            });
         }
 
         //Fetch specific item

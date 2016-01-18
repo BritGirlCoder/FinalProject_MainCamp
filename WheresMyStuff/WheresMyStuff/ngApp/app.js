@@ -29,4 +29,3 @@ var WMS;
         $locationProvider.html5Mode(true);
     });
 })(WMS || (WMS = {}));
-//# sourceMappingURL=app.js.map

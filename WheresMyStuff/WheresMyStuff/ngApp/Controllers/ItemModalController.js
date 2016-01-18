@@ -3,9 +3,10 @@ var WMS;
     var Controllers;
     (function (Controllers) {
         var ItemModalController = (function () {
-            //We're passing in the temporary message property from the showModal method in the ItemsController
-            //this will be replaced with the real data passed in from the table listing items in Items.html
-            //Also passing in a modal instance
+            //public message;
+            //We're passing in the public item property from the showModal method in the ItemsController
+            //will come from the data passed in from the table listing items in Items.html
+            //Also passing in a modal instance, routeparams
             function ItemModalController(data, $modalInstance, itemsService, $routeParams) {
                 this.data = data;
                 this.$modalInstance = $modalInstance;
@@ -13,10 +14,9 @@ var WMS;
                 this.$routeParams = $routeParams;
                 //Will have to call the getItem(itemID) in CRUDServices and assign to the item property for use
                 //in the edit & delete methods here
-                this.message = this.data;
+                this.item = this.data;
             }
             //Called from close button on modal
-            //Doesn't work - maybe because it doesn't recognize
             ItemModalController.prototype.closeModal = function () {
                 this.$modalInstance.close();
             };
@@ -25,7 +25,7 @@ var WMS;
             ItemModalController.prototype.editItem = function (item) {
                 this.item = this.itemsService.getItem(this.$routeParams["id"]);
                 //Then? .then(() => {this.closeModal()});
-                this.itemsService.saveItem(this.item);
+                this.itemsService.SaveItem(this.item);
                 this.closeModal();
             };
             //called from Delete button on modal
@@ -43,4 +43,3 @@ var WMS;
         angular.module("WMS").controller("ItemModalController", ItemModalController);
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
-//# sourceMappingURL=ItemModalController.js.map
