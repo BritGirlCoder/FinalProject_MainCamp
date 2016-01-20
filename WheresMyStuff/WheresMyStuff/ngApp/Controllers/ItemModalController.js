@@ -7,9 +7,9 @@ var WMS;
             //We're passing in the public item property from the showModal method in the ItemsController
             //will come from the data passed in from the table listing items in Items.html
             //Also passing in a modal instance, routeparams
-            function ItemModalController(data, $modalInstance, itemsService, $routeParams) {
+            function ItemModalController(data, $uibModalInstance, itemsService, $routeParams) {
                 this.data = data;
-                this.$modalInstance = $modalInstance;
+                this.$uibModalInstance = $uibModalInstance;
                 this.itemsService = itemsService;
                 this.$routeParams = $routeParams;
                 //Will have to call the getItem(itemID) in CRUDServices and assign to the item property for use
@@ -18,7 +18,7 @@ var WMS;
             }
             //Called from close button on modal
             ItemModalController.prototype.closeModal = function () {
-                this.$modalInstance.close();
+                this.$uibModalInstance.close();
             };
             //Called from Edit button on modal
             //Will need to have the id of the item passed in

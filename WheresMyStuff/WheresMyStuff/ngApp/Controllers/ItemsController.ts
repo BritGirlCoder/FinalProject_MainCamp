@@ -16,7 +16,7 @@
         //public itemImageSrc;
 
         //private keywords so class can access them
-        constructor(tagsService: WMS.Services.TagsServices, private itemsService: WMS.Services.ItemsServices, /*private tempData: WMS.Data.ItemsTempData*/ private $modal: angular.ui.bootstrap.IModalService, private $location: ng.ILocationService) {
+        constructor(tagsService: WMS.Services.TagsServices, private itemsService: WMS.Services.ItemsServices, /*private tempData: WMS.Data.ItemsTempData*/ private $uibModal: angular.ui.bootstrap.IModalService, private $location: ng.ILocationService) {
             //Testing: reading tags from the service
             //this.tags = tagsService.readTags();
             //console.log(this.tags);
@@ -24,10 +24,10 @@
             //this.message = "Hello from the Items page!"
         }
 
-        showModal() {
+        showModal(item) {
             //this.itemImageSrc = this.item.photo;
             //Opens the modal with the options specified in the argument object
-            this.$modal.open({
+            this.$uibModal.open({
                 templateUrl: '/ngApp/Views/ItemModal.html',
                 controller: 'ItemModalController',
                 controllerAs: 'wms',
@@ -35,7 +35,7 @@
                 //will be passed to the ModalController class *as "data"*
                 //can use this in my personal project - the entire item object
                 resolve: {
-                    data: () => this.item //pass the item in
+                    data: () => item //pass the item in
                 },
                 size: 'lg'
             });

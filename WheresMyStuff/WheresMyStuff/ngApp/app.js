@@ -1,7 +1,7 @@
 var WMS;
 (function (WMS) {
     //Main module set-up. Injecting ngRoute, ngResource
-    angular.module("WMS", ["ngRoute", "ngResource", "ui.bootstrap"]).config(function ($routeProvider, $locationProvider) {
+    angular.module("WMS", ["ngRoute", "ngResource", "ui.bootstrap", "uiGmapgoogle-maps"]).config(function ($routeProvider, $locationProvider, uiGmapGoogleMapApiProvider) {
         $routeProvider
             .when("/", {
             templateUrl: "ngApp/Views/Main.html",
@@ -27,5 +27,6 @@ var WMS;
             redirectTo: "/"
         });
         $locationProvider.html5Mode(true);
+        uiGmapGoogleMapApiProvider.configure({});
     });
 })(WMS || (WMS = {}));

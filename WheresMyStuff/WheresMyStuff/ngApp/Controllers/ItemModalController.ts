@@ -9,7 +9,7 @@
         //We're passing in the public item property from the showModal method in the ItemsController
         //will come from the data passed in from the table listing items in Items.html
         //Also passing in a modal instance, routeparams
-        constructor(private data, private $modalInstance: angular.ui.bootstrap.IModalServiceInstance,
+        constructor(private data, private $uibModalInstance: angular.ui.bootstrap.IModalServiceInstance,
             private itemsService: WMS.Services.ItemsServices, private $routeParams: ng.route.IRouteParamsService) {
             //Will have to call the getItem(itemID) in CRUDServices and assign to the item property for use
             //in the edit & delete methods here
@@ -18,7 +18,7 @@
         
         //Called from close button on modal
         closeModal() {
-            this.$modalInstance.close();
+            this.$uibModalInstance.close();
         }
 
         //Called from Edit button on modal

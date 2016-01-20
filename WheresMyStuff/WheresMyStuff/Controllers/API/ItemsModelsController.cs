@@ -10,36 +10,38 @@ namespace WheresMyStuff.Controllers.API
 {
     public class ItemsModelsController : ApiController
     {
-        //Created the list of temp seed items (to be replaced with a database!!)
-        static List<ItemsModels> _items = new List<ItemsModels>
-        {
-            new ItemsModels {
-                Id=1,
-                ItemName= "Clock",
-                ItemDesc= "Antique grandfather clock",
-                ItemLocation= "Storage",
-                ItemLabel= "Crate 01",
-                ItemOwner= "Jane Doe",
-                OwnerId=2,
-                ItemPhoto= ""
-                },
-            new ItemsModels {
-                Id=2,
-                ItemName= "Garden tools",
-                ItemDesc= "Small hand tools for gardening",
-                ItemLocation= "Home - Garage",
-                ItemLabel= "Box 02",
-                ItemOwner= "John Doe",
-                ItemPhoto= ""
-            }
-        };
+        ////Created the list of temp seed items (to be replaced with a database!!)
+        //static List<ItemsModels> _items = new List<ItemsModels>
+        //{
+        //    new ItemsModels {
+        //        Id=1,
+        //        ItemName= "Clock",
+        //        ItemDesc= "Antique grandfather clock",
+        //        ItemLocation= "Storage",
+        //        ItemLabel= "Crate 01",
+        //        ItemOwner= "Jane Doe",
+        //        OwnerId=2,
+        //        ItemPhoto= ""
+        //        },
+        //    new ItemsModels {
+        //        Id=2,
+        //        ItemName= "Garden tools",
+        //        ItemDesc= "Small hand tools for gardening",
+        //        ItemLocation= "Home - Garage",
+        //        ItemLabel= "Box 02",
+        //        ItemOwner= "John Doe",
+        //        ItemPhoto= ""
+        //    }
+        //};
+
+        private ApplicationDbContext _db = new ApplicationDbContext();
 
         //GET api/ItemsModels/allitems
         //Simple get function - fetch the list of items
         [HttpGet]
-        public IEnumerable<ItemsModels> DisplayAllItems()
+        public IHttpActionResult DisplayAllItems()
         {
-            return _items;
+            return Ok(_db.Items.ToList());
         }
 
         //GET api/ItemsModels/id
@@ -48,7 +50,7 @@ namespace WheresMyStuff.Controllers.API
         public IHttpActionResult DisplaySingleItem(int id)
         {
             //Find the item with the i.id matching id passed in
-            var item = _items.Find(i => i.Id == id);
+            var item = _db.Items.Find(id);
             //if there's no such item, return NotFound()
             if (item == null)
             {
@@ -66,25 +68,42 @@ namespace WheresMyStuff.Controllers.API
         [HttpPost]
         public IHttpActionResult SaveItem(ItemsModels item)
         {
-            _items.Add(item);
-            //**THIS URL DOESN'T WORK
-            return Created("/itemsTest/" + item.Id, item);
+            if (ModelState.IsValid)
+            {
+                if (item.Id == 0)
+                {
+                    _db.Items.Add(item);
+                    _db.SaveChanges();
+                    return Ok();
+                }
+                else
+                {
+                    var original = _db.Items.Find(item.Id);
+                    original.ItemDesc = item.ItemDesc;
+                    original.ItemLabel = item.ItemLabel;
+                    original.ItemLocation = item.ItemLocation;
+                    original.ItemName = item.ItemName;
+                    original.ItemOwner = item.ItemOwner;
+                    original.ItemPhoto = item.ItemPhoto;
+                    original.OwnerId = item.OwnerId;
+
+                    _db.SaveChanges();
+                    return Ok(item);
+                }                
+            }
+            return BadRequest(ModelState);
         }
 
         [HttpDelete]
-        public IHttpActionResult RemoveItem(ItemsModels item)
+        public IHttpActionResult RemoveItem(int id)
         {
-            //Remove the item from the collection and then send back the results.
-            _items.Remove(item);
-
-            //This approach may be required if you find that the first line in this sequence doesn't update the collection
-            //properly by removing the item passed in from the UI and being supposely removed from the collection
-            //First method may be problematic
-
-            //ItemsModels itemToRemove = _items.Where(w => w.Id == item.Id).FirstOrDefault();
-            //_items.Remove(itemToRemove);
-
-            return Ok(_items);
+            //Locate the item in the database
+            var original = _db.Items.Find(id);
+            //stage the database code for removing the item
+            _db.Items.Remove(original);
+            //Update the database
+            _db.SaveChanges();
+            return Ok();
         }
     }
 }

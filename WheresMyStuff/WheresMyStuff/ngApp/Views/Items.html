@@ -17,8 +17,7 @@
         12. Change owner field to dropdown populated by users on the logged in account
         -->
 
-    <div class="row container grey-background">
-        <h3>{{wms.message}}</h3>
+    <div class="row container grey-background">      
         
         <div class="col-md-6">
             <h4>Add your items below</h4>
@@ -86,15 +85,13 @@
                     <th>Item Photo</th><th>Description</th><th>Location</th><th>Name</th>
                 </tr>
                 <!--Note that the ng-repeat is on the row-->
-                <tr ng-repeat="item in wms.items">
-                    <td ng-click="wms.showModal(item)">{{item.itemPhoto}}</td>                    
+                <tr ng-repeat="item in wms.items" ng-click="wms.showModal(item)">
+                    <td>{{item.itemPhoto}}</td>                    
                     <td>{{item.itemDesc}}</td>
                     <td>{{item.itemLocation}}</td>
                     <td>{{item.itemName}}</td>
                 </tr>
-            </table>
-            <!--Will pass in item from selected item in table-->
-            <button class="btn btn-info" ng-click="wms.showModal()">Test Modal</button>
+            </table>            
         </div>
     </div>
 

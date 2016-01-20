@@ -1,11 +1,17 @@
 ﻿    <div class="row">
         <div class="col-md-6">
-            <!--
-            Insert clickable static map image here that will take you to google maps.  Add a tooltip.
-            Optional: Clickable map that will allow you to enter starting point & destination & show
-            route between the two
-            Stretch: See if there's a way to enter a google maps "search near here" in the directions modal
-         -->
+            <ui-gmap-google-map center="wms.center" zoom="wms.zoom">
+                <ui-gmap-markers models="wms.markers"
+                                 coords="'self'"
+                                 icon="'icon'"
+                                 options="'options'">
+                </ui-gmap-markers>
+
+       <!--Optional: Clickable map that will allow you to enter starting point & destination & show
+       route between the two
+       Stretch: See if there's a way to enter a google maps "search near here" in the directions modal-->
+            </ui-gmap-google-map>
+            
         </div>
         <div class="col-md-6">
             <h2 class="text-info">

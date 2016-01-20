@@ -1,8 +1,9 @@
 ﻿namespace WMS {
 
     //Main module set-up. Injecting ngRoute, ngResource
-    angular.module("WMS", ["ngRoute", "ngResource", "ui.bootstrap"]).config(($routeProvider: ng.route.IRouteProvider,
-        $locationProvider: ng.ILocationProvider) => {
+    angular.module("WMS", ["ngRoute", "ngResource", "ui.bootstrap", "uiGmapgoogle-maps"]).config(($routeProvider: ng.route.IRouteProvider,
+        $locationProvider: ng.ILocationProvider,
+        uiGmapGoogleMapApiProvider: any) => {
         $routeProvider
             .when("/", {
                 templateUrl: "ngApp/Views/Main.html",
@@ -23,10 +24,13 @@
                 templateUrl: "ngApp/Views/Profile.html",
                 controller: WMS.Controllers.ProfileController,
                 controllerAs: "wms"
-            })            
+            })
             .otherwise({
                 redirectTo: "/"
             });
         $locationProvider.html5Mode(true);
+        uiGmapGoogleMapApiProvider.configure({
+            //add key here
+        });
     });
 }

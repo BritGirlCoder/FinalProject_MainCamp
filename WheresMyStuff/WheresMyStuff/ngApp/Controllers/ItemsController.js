@@ -6,9 +6,9 @@ var WMS;
             //Holds the image of the current item - doesn't work - can't pass in multiple objects to modal with resolve
             //public itemImageSrc;
             //private keywords so class can access them
-            function ItemsController(tagsService, itemsService, /*private tempData: WMS.Data.ItemsTempData*/ $modal, $location) {
+            function ItemsController(tagsService, itemsService, /*private tempData: WMS.Data.ItemsTempData*/ $uibModal, $location) {
                 this.itemsService = itemsService;
-                this.$modal = $modal;
+                this.$uibModal = $uibModal;
                 this.$location = $location;
                 //Testing: reading tags from the service
                 //this.tags = tagsService.readTags();
@@ -16,11 +16,10 @@ var WMS;
                 //Testing - ensuring routing works correctly
                 //this.message = "Hello from the Items page!"
             }
-            ItemsController.prototype.showModal = function () {
-                var _this = this;
+            ItemsController.prototype.showModal = function (item) {
                 //this.itemImageSrc = this.item.photo;
                 //Opens the modal with the options specified in the argument object
-                this.$modal.open({
+                this.$uibModal.open({
                     templateUrl: '/ngApp/Views/ItemModal.html',
                     controller: 'ItemModalController',
                     controllerAs: 'wms',
@@ -28,7 +27,7 @@ var WMS;
                     //will be passed to the ModalController class *as "data"*
                     //can use this in my personal project - the entire item object
                     resolve: {
-                        data: function () { return _this.item; } //pass the item in
+                        data: function () { return item; } //pass the item in
                     },
                     size: 'lg'
                 });
