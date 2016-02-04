@@ -1,17 +1,19 @@
 ﻿    <div class="row">
         <div class="col-md-6">
+            <script type="text/ng-template" id="searchbox.tpl.html">
+                <input type="text" placeholder="Search Box">
+            </script>
             <ui-gmap-google-map center="wms.center" zoom="wms.zoom">
                 <ui-gmap-markers models="wms.markers"
                                  coords="'self'"
                                  icon="'icon'"
                                  options="'options'">
                 </ui-gmap-markers>
-
-       <!--Optional: Clickable map that will allow you to enter starting point & destination & show
-       route between the two
-       Stretch: See if there's a way to enter a google maps "search near here" in the directions modal-->
+                <!--TO DO Implement Google maps searchbox-->
+                <!--<ui-gmap-search-box template="searchbox.template" events="searchbox.events" position="UPPER_LEFT"></ui-gmap-search-box>-->
+       
             </ui-gmap-google-map>
-            
+            <a href="http://maps.google.com">Click here for a larger map</a>
         </div>
         <div class="col-md-6">
             <h2 class="text-info">
@@ -35,7 +37,7 @@
             </h3>
 
             <p>
-                <a class="btn btn-primary btn-large" href="/profile">Sign up now!</a>
+                <a class="btn btn-primary btn-large" href="/register">Sign up now!</a>
             </p>
         </div>
 

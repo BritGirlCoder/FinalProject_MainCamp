@@ -13,17 +13,17 @@ var WMS;
                     {
                         id: 0,
                         options: {
-                            title: "You are here"
+                            title: "Start here"
                         },
-                        //pass in the address from the User Info                
-                        latitude: 33.5000,
-                        longitude: -112.0060
+                        //TODO - pass in the address from the User Info                
+                        latitude: 37.09024,
+                        longitude: -100.712891
                     },
                 ];
-                this.message = "Hello from the About page!";
             }
             return AboutController;
         })();
         Controllers.AboutController = AboutController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
+//# sourceMappingURL=AboutController.js.map

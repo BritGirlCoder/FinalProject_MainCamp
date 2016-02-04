@@ -4,56 +4,73 @@ var WMS;
     var Services;
     (function (Services) {
         //CRUD class for users (profile view/controller)
-        // export class UsersServices {
-        //    //property to hold userss $resource
-        //    private UserResource;
-        //    //constructor with $resource dependency injection
-        //    constructor($resource: ng.resource.IResourceService) {
-        //        this.UserResource = $resource("");
-        //    }
-        //    //Read Users
-        //    public listUsers() {
-        //        return this.UserResource.query();
-        //    }
-        //Create user
-        //public createUser(user) {
-        //return console.log("create User");
-        //        return this.UserResource.save(item).$promise;
-        //}
-        //    //Fetch specific user
-        //    public getMovie(id: number) {
-        //        return this.UserResource.get({id: id});
-        //    }
-        //    //Delete user
-        //    public deleteUser(id: number) {
-        //        return this.UserResource.delete({ id: id }).promise;
-        //    }
-        // }
-        //**TODO - once backend db is complete, will need to access the items table in db via webapi
-        //**TODO - build dummy array of items for testing & point ItemResource at that instead
-        //CRUD class for items (items view/controller)
-        var ItemsServices = (function () {
+        var AccountProfileServices = (function () {
             //constructor with $resource dependency injection
-            function ItemsServices($resource /*itemsTempData: WMS.Data.ItemsTempData*/) {
-                //**NONE OF THESE WORK
-                //this.ItemResource = $resource("/api/ItemsModelsController/:id");
-                //this.ItemResource = $resource("../api/ItemsModelsController/:id");
-                this.ItemResource = $resource("../api/ItemsModels/:id");
-                this.listItems();
+            function AccountProfileServices($resource) {
+                this.ProfileResource = $resource("/api/AccountProfile/:id");
+                this.ProfilesByUserResource = $resource("api/AccountProfile/getProfilesByUser/");
             }
-            //Read Items
-            ItemsServices.prototype.listItems = function () {
-                return this.ItemResource.query();
+            //Read All Profiles
+            AccountProfileServices.prototype.listAccounts = function () {
+                return this.ProfileResource.query();
+            };
+            //Create Profile
+            AccountProfileServices.prototype.createAccountProfile = function (profile) {
+                console.log("create profile");
+                console.log("CRUDServices createProfile " + profile);
+                return this.ProfileResource.save(profile).$promise;
+            };
+            //Save Profile
+            AccountProfileServices.prototype.saveAccountProfile = function (profile) {
+                return this.ProfileResource.save(profile).$promise;
+            };
+            //Fetch specific AccountProfile by id
+            AccountProfileServices.prototype.getAccountProfile = function (id) {
+                return this.ProfileResource.get({ id: id });
+            };
+            //Fetch specific Profiles by Login UserID
+            AccountProfileServices.prototype.getAccountProfileByUser = function () {
+                this.profiles = this.ProfilesByUserResource.query();
+                return this.profiles;
+            };
+            //Delete AccountProfile
+            AccountProfileServices.prototype.deleteAccountProfile = function (id) {
+                return this.ProfileResource.delete({ id: id }).promise;
+            };
+            return AccountProfileServices;
+        })();
+        Services.AccountProfileServices = AccountProfileServices;
+        var ItemsServices = (function () {
+            //Property to hold profiles
+            //public profiles;
+            //Property to hold selected profile
+            //public selectedProfile
+            //constructor with $resource dependency injection
+            function ItemsServices($resource, profileService) {
+                this.profileService = profileService;
+                this.ItemResource = $resource("/api/ItemsModels/:id");
+                this.ItemByUserResource = $resource("api/ItemsModels/DisplayByUser/");
+                this.ItemByProfileResource = $resource("api/ItemsModels/DisplayByProfile/:id");
+                this.AccountResource = $resource("/api/AccountProfile/:id");
+            }
+            //Read Items for specific login
+            ItemsServices.prototype.listItemsByUser = function () {
+                var items = this.ItemByUserResource.query();
+                return items;
+            };
+            //Read Items for specific profile
+            ItemsServices.prototype.listItemsByProfile = function (profileId) {
+                var items = this.ItemByProfileResource.query({ id: profileId });
+                return items;
+            };
+            //Read all Items for any login - restricted to admin users only on server side
+            ItemsServices.prototype.listAllItems = function () {
+                var items = this.ItemResource.query();
+                return items;
             };
             //Create/Save item
             ItemsServices.prototype.SaveItem = function (item) {
-                var _this = this;
-                //**NOT SURE HOW TO CHANGE THIS FOR USE WITH ANG ItemsCONTROLLER            
-                return this.ItemResource.save(item).$promise.then(function () {
-                    _this.item = null;
-                    _this.listItems();
-                    //TESTING ONLY - console.log("CRUDServices SaveItem method");
-                });
+                return this.ItemResource.save(item).promise;
             };
             //Fetch specific item
             ItemsServices.prototype.getItem = function (id) {
@@ -80,9 +97,10 @@ var WMS;
             return TagsServices;
         })();
         Services.TagsServices = TagsServices;
-        //registering the service with the module.  Note that we have what we'll call it and then the function
-        //(class in this case) that actually has the functionality for the service
+        //registering the services
         angular.module("WMS").service("tagsService", TagsServices);
         angular.module("WMS").service("itemsService", ItemsServices);
+        angular.module("WMS").service("profileService", AccountProfileServices);
     })(Services = WMS.Services || (WMS.Services = {}));
 })(WMS || (WMS = {}));
+//# sourceMappingURL=CRUDServices.js.map

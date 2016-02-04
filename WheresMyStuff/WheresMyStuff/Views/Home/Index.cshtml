@@ -17,14 +17,18 @@
             </div>
         </div>       
         
-        <div class="row">
+        <div class="row" ng-controller="AccountController as account">
             <nav class="navbar navbar-default">
                 <div class="collapse navbar-collapse">
                     <ul class="nav nav-pills">
                         <li><a href="/">Home</a></li>
                         <li><a href="/about">About Where's My Stuff</a></li>
-                        <li><a href="/profile">Set up your Profile</a></li>
-                        <li><a href="/items">Manage your Items</a></li>
+                        <li><a href="/login" ng-show="!account.isLoggedIn()">Login/Register</a></li>
+                        <li>
+                        <a href="#" ng-click="account.logout()" ng-show="account.isLoggedIn()">Logout</a>
+                        </li>
+                        <li><a href="/profile" ng-show="account.isLoggedIn()">Manage your Profile</a></li>
+                        <li><a href="/items" ng-show="account.isLoggedIn()">Manage your Items</a></li>
                     </ul>
                 </div>
             </nav>
@@ -41,7 +45,11 @@
     @*<script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>*@
     @*Angular*@
+    <script src="~/Scripts/jquery-2.2.0.min.js"></script>
     <script src="~/Scripts/angular.js"></script>
+    <!--get the cdn for the filepicker.js-->
+    <script type="text/javascript" src="//api.filestackapi.com/filestack.js"></script>
+    <script src="~/Scripts/angular_filepicker.min.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
     <script src="~/Scripts/angular-route.js"></script>
     <script src="~/Scripts/angular-resource.js"></script>
@@ -50,11 +58,14 @@
     <script src="~/Scripts/angular-google-maps.min.js"></script>
     @*Application*@
     <script src="~/ngApp/app.js"></script>
+    <script src="~/ngApp/Services/accountService.js"></script>
     <script src="~/ngApp/Services/CRUDServices.js"></script>
+    <script src="~/ngApp/Controllers/accountController.js"></script>
     <script src="~/ngApp/Controllers/AboutController.js"></script>
     <script src="~/ngApp/Controllers/ItemsController.js"></script>
     <script src="~/ngApp/Controllers/MainController.js"></script>
     <script src="~/ngApp/Controllers/ProfileController.js"></script>
     <script src="~/ngApp/Controllers/ItemModalController.js"></script>
+    <script src="~/ngApp/Controllers/notFoundController.js"></script>
 </body>
 </html>

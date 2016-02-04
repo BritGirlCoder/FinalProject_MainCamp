@@ -24,6 +24,7 @@ namespace WheresMyStuff.Controllers
     public class AccountController : ApiController
     {
         private const string LocalLoginProvider = "Local";
+
         private ApplicationUserManager _userManager;
 
         public AccountController()
@@ -327,7 +328,7 @@ namespace WheresMyStuff.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            //Create new user based on the user-entered information on the client side
             var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
@@ -337,6 +338,27 @@ namespace WheresMyStuff.Controllers
                 return GetErrorResult(result);
             }
 
+            // Send an email confirmation
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+            code = System.Web.HttpUtility.UrlEncode(code);
+
+            var callbackUrl = String.Format("/confirmEmail?userId={0}&code={1}", user.Id, code);
+            var absoluteCallbackUrl = Request.GetUrlHelper().Content(callbackUrl);
+            await UserManager.SendEmailAsync(user.Id, "Thank you for registering with Where's My Stuff!", " This email has been automatically generated so you can confirm your email.  Please confirm your email and account by clicking <a href=\"" + absoluteCallbackUrl + "\">here</a> now");
+
+            return Ok();
+        }
+
+        // POST api/Account/ConfirmEmail
+        [AllowAnonymous]
+        [Route("ConfirmEmail")]
+        public async Task<IHttpActionResult> ConfirmEmail(ConfirmEmailBindingModel model)
+        {
+            var result = await UserManager.ConfirmEmailAsync(model.UserId, model.Code);
+            if (!result.Succeeded)
+            {
+                return BadRequest("Invalid confirmation code!");
+            }
             return Ok();
         }
 

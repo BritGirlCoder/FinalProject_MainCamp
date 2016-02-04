@@ -21,9 +21,12 @@ namespace WheresMyStuff.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        //This is for the Items
+        //This is for the entity sets which represent a database table
+        //Each entity in the entity set corresponds to a row in the table
         public IDbSet<ItemsModels> Items { get; set; }
-
+        //public IDbSet<AuthUsersModels> AuthUsers { get; set; }
+        public IDbSet<ProfileModels> Profiles { get; set; }
+        
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

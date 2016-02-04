@@ -5,52 +5,45 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Security.Claims;
+using WheresMyStuff.Repositories;
+using Microsoft.AspNet.Identity;
 
 namespace WheresMyStuff.Controllers.API
 {
     public class ItemsModelsController : ApiController
     {
-        ////Created the list of temp seed items (to be replaced with a database!!)
-        //static List<ItemsModels> _items = new List<ItemsModels>
-        //{
-        //    new ItemsModels {
-        //        Id=1,
-        //        ItemName= "Clock",
-        //        ItemDesc= "Antique grandfather clock",
-        //        ItemLocation= "Storage",
-        //        ItemLabel= "Crate 01",
-        //        ItemOwner= "Jane Doe",
-        //        OwnerId=2,
-        //        ItemPhoto= ""
-        //        },
-        //    new ItemsModels {
-        //        Id=2,
-        //        ItemName= "Garden tools",
-        //        ItemDesc= "Small hand tools for gardening",
-        //        ItemLocation= "Home - Garage",
-        //        ItemLabel= "Box 02",
-        //        ItemOwner= "John Doe",
-        //        ItemPhoto= ""
-        //    }
-        //};
+        private IItemRepository _repo;
+        private IAccountProfileRepository _repoAcct;
 
-        private ApplicationDbContext _db = new ApplicationDbContext();
+        public ItemsModelsController(IItemRepository repo, IAccountProfileRepository repoAcct)
+        {
+            _repo = repo;
+            _repoAcct = repoAcct;
+        }
 
-        //GET api/ItemsModels/allitems
-        //Simple get function - fetch the list of items
+        #region Get methods 
+        //This gets all items for all profiles
+        [Authorize]
         [HttpGet]
         public IHttpActionResult DisplayAllItems()
         {
-            return Ok(_db.Items.ToList());
+            //if user is not an admin, they cannot run this function
+            var user = User.Identity as ClaimsIdentity;
+            if (!user.HasClaim("Admin", "true"))
+            {
+                return Unauthorized();
+            }
+         
+            return Ok(_repo.ListItems());
         }
 
-        //GET api/ItemsModels/id
-        //Simple get function - fetch a single item defined by its id
+        //Get single item defined by its id
+        [Authorize]
         [HttpGet]
         public IHttpActionResult DisplaySingleItem(int id)
         {
-            //Find the item with the i.id matching id passed in
-            var item = _db.Items.Find(id);
+            var item = _repo.GetItemById(id);
             //if there's no such item, return NotFound()
             if (item == null)
             {
@@ -63,47 +56,75 @@ namespace WheresMyStuff.Controllers.API
             }
         }
 
+        //Get items for a single profile by profile id
+        [Route("api/ItemsModels/DisplayByProfile/{id}")]
+        [HttpGet]
+        public IHttpActionResult DisplayItemsByProfile(int id)
+        {
+            var items = _repo.GetItemsByAccount(id);
+            //if no match, return NotFound()
+            if (items == null)
+            {
+                return NotFound();
+            }
+            //If found, return item
+            else
+            {
+                return Ok(items);
+            }
+        }
+
+        //Get items by login
+        [Route("api/ItemsModels/DisplayByUser/")]
+        [HttpGet]
+        public IHttpActionResult DisplayItemsByUser()
+        {
+            var userName = User.Identity.Name;
+            var items = _repo.GetItemsByUser(userName);
+            //if no match, return NotFound()
+            if (items == null)
+            {
+                return NotFound();
+            }
+            //If found, return item
+            else
+            {
+                return Ok(items);
+            }
+        }
+        #endregion
+
+        #region Create/Update
         //POST: api/ItemsModels
         //Post saves a product
         [HttpPost]
         public IHttpActionResult SaveItem(ItemsModels item)
         {
             if (ModelState.IsValid)
-            {
+            {   
                 if (item.Id == 0)
                 {
-                    _db.Items.Add(item);
-                    _db.SaveChanges();
-                    return Ok();
+                    item.Profile = null;
+                    _repo.CreateItem(item);
                 }
                 else
                 {
-                    var original = _db.Items.Find(item.Id);
-                    original.ItemDesc = item.ItemDesc;
-                    original.ItemLabel = item.ItemLabel;
-                    original.ItemLocation = item.ItemLocation;
-                    original.ItemName = item.ItemName;
-                    original.ItemOwner = item.ItemOwner;
-                    original.ItemPhoto = item.ItemPhoto;
-                    original.OwnerId = item.OwnerId;
-
-                    _db.SaveChanges();
-                    return Ok(item);
-                }                
+                    item.Profile = null;
+                    _repo.UpdateItem(item);
+                }
+                return Ok();
             }
             return BadRequest(ModelState);
         }
+        #endregion
 
+        #region Hard Delete
         [HttpDelete]
         public IHttpActionResult RemoveItem(int id)
-        {
-            //Locate the item in the database
-            var original = _db.Items.Find(id);
-            //stage the database code for removing the item
-            _db.Items.Remove(original);
-            //Update the database
-            _db.SaveChanges();
+        {            
+            _repo.DeleteItem(id);
             return Ok();
         }
+        #endregion
     }
 }

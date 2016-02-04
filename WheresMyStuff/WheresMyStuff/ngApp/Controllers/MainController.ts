@@ -11,7 +11,7 @@
                 text: "Moving?"
             },
             {
-                image: "http://www.vossrdstorage.com/wp-content/themes/voss/images/self-storage-sugarland-tx.jpg",
+                image: "http://www.mgr-storage.co.uk/pliki/s2c2.jpg",
                 text: "What's in Storage?"
             },
             {

@@ -14,7 +14,7 @@ var WMS;
                         text: "Moving?"
                     },
                     {
-                        image: "http://www.vossrdstorage.com/wp-content/themes/voss/images/self-storage-sugarland-tx.jpg",
+                        image: "http://www.mgr-storage.co.uk/pliki/s2c2.jpg",
                         text: "What's in Storage?"
                     },
                     {
@@ -28,3 +28,4 @@ var WMS;
         Controllers.MainController = MainController;
     })(Controllers = WMS.Controllers || (WMS.Controllers = {}));
 })(WMS || (WMS = {}));
+//# sourceMappingURL=MainController.js.map

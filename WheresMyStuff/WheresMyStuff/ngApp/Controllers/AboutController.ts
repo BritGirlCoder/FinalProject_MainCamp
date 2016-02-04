@@ -1,9 +1,8 @@
 ﻿namespace WMS.Controllers {
-    export class AboutController {
-        public message;
+    export class AboutController {        
 
         constructor() {
-            this.message = "Hello from the About page!"
+            
         }
 
         public center = {
@@ -17,14 +16,23 @@
             {
                 id: 0,
                 options: {
-                    title: "You are here"
+                    title: "Start here"
                 },
-                //pass in the address from the User Info                
-                latitude: 33.5000,
-                longitude: -112.0060
+                //TODO - pass in the address from the User Info                
+                latitude: 37.09024,
+                longitude: -100.712891
             },            
         ]
 
+        //Code to implement for Google Maps searchbox
+        //public events = {
+        //    places_changed: function (searchBox) {
+        //        var place = searchBox.getPlaces();
+        //    }
+        //}
+        //public searchbox = {
+        //    template: 'searchbox.tpl.html', events: this.events
+        //};
     }
 
 }

@@ -1,27 +1,12 @@
 ﻿   
-    <!--TODO
-        1.  Remove myStuffItemImage & place on details modal
-        2.  Once hooked up, get only 25 items at a time listed out in the table - include small images if poss
-        3.  Each item will have a thumbnail image(?), name, location & description
-        3.  Clicking on any item in the table will launch the details modal
-        4.  The details of the item will be displayed in the modal
-        DONE 5.  Relocate the edit & delete buttons to the modal
-        6.  Edit should allow editing right on the modal
-        7.  Delete should allow deletion right from the modal
-        8.  If 6/7 not poss, return to items page & enable fields for editing; change button text to edit or
-            delete as appropriate
-        9.  Remove the list & save buttons - should load the first 25 on pageload and save automatically when
-            adding the item
-        10. Make add item full width of form
-        11. Add owner field, change Box Number to Item Label
-        12. Change owner field to dropdown populated by users on the logged in account
-        -->
-
     <div class="row container grey-background">      
         
-        <div class="col-md-6">
-            <h4>Add your items below</h4>
-            <form name = itemForm; novalidate ng-submit = "wms.createItem()">
+        <div class="col-md-5">
+            <h4>Add your items below</h4>            
+            <ul>
+                <li ng-repeat="error in wms.validationErrors" class="text-danger">{{error}}</li>
+            </ul>
+            <form name = itemForm; novalidate>
                 <div class="form-group">
                     <label>Name of item:</label>
                     <input type="text" ng-model="wms.itemToAdd.itemName" name="itemName" class="form-control" placeholder="Item Name" required />
@@ -56,14 +41,24 @@
                 </div>
                 <div class="form-group">
                     <label>Item Owner:</label>
-                    <input type="text" ng-model="wms.itemToAdd.itemOwner" name="itemOwner" class="form-control" placeholder="Who does this belong to?" />
+                    <select class="form-control" name="itemOwner"
+                            ng-model="wms.selectedProfile"
+                            ng-options="profile.fullname for profile in wms.profiles"
+                            ng-change="wms.populateItemWithProfileID()"></select>
                     <span ng-show="itemForm.itemOwner.$touched && itemForm.itemOwner.$error.required" class="error">
                         This field is required
                     </span>
                 </div>
-                <div class="form-group">                    
-                    <h4>Upload a Photo:</h4>
-                    <input ng-model="wms.itemToAdd.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" />
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <h4>Upload a Photo:</h4>
+                            <button ng-click="wms.pickFile()">Upload a photo</button>
+                            <h4>{{wms.itemToAdd.itemFilename}}</h4>
+                            <!--<img ng-src="{{wms.itemToAdd.itemPhoto | fpConvert:{w: 100} }}" />-->
+                            <img ng-src="{{wms.itemToAdd.itemPhoto}}" style="max-width:200px" />
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
@@ -73,25 +68,44 @@
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <input id="btnListItems" type="button" class="btn btn-success btn-block" value="List Items" ng-click="wms.displayItems()" />
+                            <input id="btnListItems" type="button" class="btn btn-success btn-block" value="List Items" ng-click="wms.displayUserItems()" />
                         </div>
                     </div>
-                </div>
+                </div>                
             </form>
+            
         </div>
-        <div class="col-md-6" id="myStuffItemTable">
-            <table class="table table-hover">
+        <div class="col-md-7" id="myStuffItemTable">
+            
+                <h4>Filter by Owner:</h4>
+                <p>
+                    <select ng-model="wms.selectedProfile"
+                            ng-options="profile.fullname for profile in wms.profiles"
+                            ng-change="wms.displayProfileItems()">
+
+                    </select>
+                </p>
+            
+            <table class="table table-bordered">     
+                <tr style="font-size:large">
+                    <th class="text-uppercase">Item Photo</th>
+                    <th class="text-uppercase">Name</th>
+                </tr>
                 <tr>
-                    <th>Item Photo</th><th>Description</th><th>Location</th><th>Name</th>
+                    <th>Click below to edit/add a photo</th>
+                    <th>Click on the name to edit item details</th>
                 </tr>
                 <!--Note that the ng-repeat is on the row-->
-                <tr ng-repeat="item in wms.items" ng-click="wms.showModal(item)">
-                    <td>{{item.itemPhoto}}</td>                    
-                    <td>{{item.itemDesc}}</td>
-                    <td>{{item.itemLocation}}</td>
-                    <td>{{item.itemName}}</td>
+                <tr ng-repeat="item in wms.items" ng-model="wms.profiles">
+                    <td ng-click="wms.pickFileEdit(item)">
+                    <img ng-src="{{item.itemPhoto}}" style="max-width:150px" />
+                    </td>
+                    <td ng-click="wms.showModal(item, wms.profiles)">
+                    {{item.itemName}}
+                    </td>
                 </tr>
             </table>            
         </div>
+        
     </div>
 

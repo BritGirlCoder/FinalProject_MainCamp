@@ -25,3 +25,4 @@
 //    }
 //    angular.module("WMS").service("itemsTempData", ItemsTempData);
 //} 
+//# sourceMappingURL=TempData.js.map

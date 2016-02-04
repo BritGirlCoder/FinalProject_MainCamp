@@ -34,11 +34,12 @@ namespace WheresMyStuff.Models
 
     public class RegisterBindingModel
     {
-        [Required]
+        [Required(ErrorMessage = "Please enter an email for your username")]
         [Display(Name = "Email")]
+        [DataType(DataType.EmailAddress, ErrorMessage ="Your username must be an email")]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "A password is required")]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -80,5 +81,11 @@ namespace WheresMyStuff.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+    }
+
+    public class ConfirmEmailBindingModel
+    {
+        public string UserId { get; set; }
+        public string Code { get; set; }
     }
 }

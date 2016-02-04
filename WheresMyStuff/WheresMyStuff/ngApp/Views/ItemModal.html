@@ -1,5 +1,4 @@
-﻿<div>
-    <!--placeholder for testing-->
+﻿<div class="container">
     <h1 class="modal-title">Details for {{wms.item.itemName}}</h1>    
 </div>
         <form class="modal-body" name="detailsForm" novalidate ng-model="wms.item">
@@ -37,37 +36,25 @@
             </div>
             <div class="form-group">
                 <label>Item Owner:</label>
-                <input type="text" ng-model="wms.item.itemOwner" name="itemOwner" class="form-control" value="{{item.itemOwner}}" />
+                <select class="form-control" name="itemOwner"
+                        ng-model="wms.selectedProfile"
+                        ng-options="profile.fullname for profile in wms.profiles"
+                        ng-change="wms.populateItemWithProfileID()"></select>
                 <span ng-show="detailsForm.itemOwner.$touched && detailsForm.itemOwner.$error.required" class="error">
                     This field is required
                 </span>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <h4>Upload a Photo:</h4>
-                <input ng-model="wms.item.Photo" name="itemPhoto" id="itemPhoto" type="file" class="file" value="{{item.Photo}}"/>
-            </div>
+                <button ng-click="wms.pickFile()">Upload a photo</button>
+                <h4>{{wms.item.itemFilename}}</h4>
+                <img ng-src="{{wms.item.itemPhoto}}" style="width: 150px" />
+            </div>-->
             <!--buttons to close the modal, edit or delete the item-->
-            <button class="btn btn-warning" ng-click="wms.editModal(item)">Edit Item</button>
-            <button class="btn btn-danger" ng-click="wms.deleteModal(item)">Delete Item</button>
+            <button class="btn btn-warning" ng-click="wms.editItem()">Save Changes</button>
+            <button class="btn btn-danger" ng-click="wms.deleteItem()">Delete Item</button>
             <button class="btn btn-primary" ng-click="wms.closeModal()">Close</button>
         </form>
 
 
-
-
-
-
-
-
-
-<!-- Reference only
-<div class="modal-header">
-    <h1 class="modal-title">Selected Animal</h1>
-    <h2 class="modal-body">You like {{vm.data}}</h2>
-    <!--this gives us a button to close the modal
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="vm.closeModal()">Close</button>
-    </div>
-</div>
--->
 

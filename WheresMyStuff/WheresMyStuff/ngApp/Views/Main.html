@@ -72,15 +72,17 @@
 
     </div>
 </div>
-<div class="row">
+<div class="row" ng-controller="AccountController as account">
     <div class="col-md-4">
         <p>
-            <a class="btn btn-info" href="/profile">View details »</a>
+            <a class="btn btn-info" href="/profile" ng-show="account.isLoggedIn()">View details »</a>
+            <a class="btn btn-info" href="/login" ng-show="!account.isLoggedIn()">View details »</a>
         </p>
     </div>
     <div class="col-md-4">
         <p>
-            <a class="btn btn-info" href="/items">View details »</a>
+            <a class="btn btn-info" href="/items" ng-show="account.isLoggedIn()">View details »</a>
+            <a class="btn btn-info" href="/login" ng-show="!account.isLoggedIn()">View details »</a>
         </p>
     </div>
     <div class="col-md-4">

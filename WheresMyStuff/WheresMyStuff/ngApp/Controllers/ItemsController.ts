@@ -1,57 +1,137 @@
 ﻿namespace WMS.Controllers {
 
     export class ItemsController {
-        //temp to show it works
-        //public message;
-        //Testing: Holds the returned tags
-        //public tags;
+       
+        //Holds current active profile
+        public profile;
+        //Holds all profiles for currently logged in user
+        public profiles;
 
         //Holds an item from the items page / returned item from ItemsServices
         public item;
+        //Holds item to edit
+        public itemToEdit;
         //Holds an item to add
         public itemToAdd;
         //Holds a list of items from ItemsServices
         public items;
-        //Holds the image of the current item - doesn't work - can't pass in multiple objects to modal with resolve
-        //public itemImageSrc;
+        //Holds the image file information of the current item
+        public file;
+        //Property to hold selected profile
+        public selectedProfile
+        //property to hold profileModelId
+        public profileModelId;
+        //property to hold any validation errors
+        public validationErrors;
+        //property to hold search textbox value
+        public filterValue;
 
         //private keywords so class can access them
-        constructor(tagsService: WMS.Services.TagsServices, private itemsService: WMS.Services.ItemsServices, /*private tempData: WMS.Data.ItemsTempData*/ private $uibModal: angular.ui.bootstrap.IModalService, private $location: ng.ILocationService) {
-            //Testing: reading tags from the service
-            //this.tags = tagsService.readTags();
-            //console.log(this.tags);
-            //Testing - ensuring routing works correctly
-            //this.message = "Hello from the Items page!"
+        constructor(private itemsService: WMS.Services.ItemsServices, private profileService: WMS.Services.AccountProfileServices, private $uibModal: angular.ui.bootstrap.IModalService, private $location: ng.ILocationService, private filepickerService, private $scope: ng.IScope, private $route: ng.route.IRouteService) {                      
+                        
+            this.itemToEdit = {};
+
+            //need to do explicitly create the item object in the constructor so it actually exists.  The browser does not always do it automatically when setting the property
+            this.item = {};
+            this.displayUserItems();
+            this.profiles = this.profileService.getAccountProfileByUser();            
         }
 
-        showModal(item) {
-            //this.itemImageSrc = this.item.photo;
+        showModal(item, profile) {            
             //Opens the modal with the options specified in the argument object
             this.$uibModal.open({
                 templateUrl: '/ngApp/Views/ItemModal.html',
                 controller: 'ItemModalController',
                 controllerAs: 'wms',
-                //resolve will allow the animalName to be passed to the data variable and then it
-                //will be passed to the ModalController class *as "data"*
-                //can use this in my personal project - the entire item object
+                //resolve will allow the item to be passed to the data variable and then
+                //passed to the ModalController class *as "data"*                
                 resolve: {
-                    data: () => item //pass the item in
+                    data: () => item, //pass the item in
+                    acctProfile: () => profile
                 },
                 size: 'lg'
-            });
-            console.log(this.item);
+            });            
         };
         
-        createItem() {
+        populateItemWithProfileID() {            
+            this.profileModelId = this.selectedProfile.id;
+        }
+
+        //creates an item
+        createItem() {            
+            //Array for validation errors
+            this.validationErrors = [];
+            //We're adding in the profileModelsId and the profile object so we can capture the userId
+            this.itemToAdd.profileModelsId = this.profileModelId;  
+            this.itemToAdd.profile = this.selectedProfile;          
+            this.itemToAdd.profile.userId = this.selectedProfile.userId;
+            //This value is not set by the user, so we're setting it here            
+            this.itemToAdd.isActive = true;
+            //Not really needed, but may use in the future
+            this.itemToAdd.itemOwner = this.selectedProfile.fullname;
+
+            //After item has successfully saved, we refresh the view & set the itemToAdd to null
             this.itemsService.SaveItem(this.itemToAdd).then(() => {
-                this.$location.path("/items");
-                //TESTING ONLY - console.log("ItemsController createItem method");
-            })
+                this.itemsService.listItemsByUser;
+                this.$route.reload();
+                this.itemToAdd = null;
+                //Catch allows us to get any error messages
+            }).catch((error) => {
+                for (var i in error.data.modelState) {
+                    var errorMessage = error.data.modelState[i];
+                    this.validationErrors = this.validationErrors.concat(errorMessage);
+                }
+            });
+        }
+
+        //Displays all items - restricted to admins only:
+        displayAllItems() {
+            this.items = this.itemsService.listAllItems();
         }
         
-        displayItems() {
-            this.items = this.itemsService.listItems();
-        }        
-              
+        //Displays items for specific user login
+        displayUserItems() {
+            this.items = this.itemsService.listItemsByUser();            
+        }
+
+        //Displays items for specific profile from logged in user
+        displayProfileItems() {            
+            this.profileModelId = this.selectedProfile.id;            
+            this.items = this.itemsService.listItemsByProfile(this.profileModelId);
+        }     
+
+        //Used when creating an item
+        public pickFile() {
+            this.filepickerService.pick(
+                { mimetype: "image/*" },
+                this.fileUploaded.bind(this)
+            );
+        }
+
+        //Used when creating an item
+        public fileUploaded(file) {
+            //save file url to database            
+            this.file = file;
+            this.$scope.$apply();            
+            this.itemToAdd.itemPhoto = file.url;      
+        }
+
+        //Used when editing an item
+        public pickFileEdit(item) {
+            this.itemToEdit = item;
+            this.filepickerService.pick(
+                { mimetype: "image/*" },
+                this.fileUploadedEdit.bind(this)
+            );
+        }
+        //Used when editing an item
+        public fileUploadedEdit(file) {
+            console.log("fileUploadedEdit");
+            //save file url to database
+            this.file = file;
+            this.itemToEdit.itemPhoto = this.file.url;
+            this.$scope.$apply();  
+            this.itemsService.SaveItem(this.itemToEdit);
+        }
     }
 }
